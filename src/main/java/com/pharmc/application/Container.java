@@ -7,6 +7,7 @@ import com.pharmc.application.service.interfaces.CommentServiceInterface;
 import com.pharmc.application.service.interfaces.DrugServiceInterface;
 import com.pharmc.application.service.interfaces.TimeblockServiceInterface;
 import com.pharmc.infrastructure.persistence.JsonCommentRepository;
+import com.pharmc.infrastructure.persistence.JsonDB;
 import com.pharmc.infrastructure.persistence.JsonDrugRepository;
 import com.pharmc.infrastructure.persistence.JsonTimeblockRepository;
 import com.pharmc.infrastructure.persistence.interfaces.CommentRepositoryInterface;
@@ -23,9 +24,10 @@ public class Container {
     private HashMap<Class, Object> services = new HashMap<>();
 
     public Container() {
-        services.put(DrugRepositoryInterface.class, new JsonDrugRepository());
-        services.put(CommentRepositoryInterface.class, new JsonCommentRepository());
-        services.put(TimeblockRepositoryInterface.class, new JsonTimeblockRepository());
+        services.put(JsonDB.class, new JsonDB(System.getProperty("user.dir") + "\\src\\main\\resources\\db.json"));
+        services.put(DrugRepositoryInterface.class, new JsonDrugRepository(resolve(JsonDB.class)));
+        services.put(CommentRepositoryInterface.class, new JsonCommentRepository(resolve(JsonDB.class)));
+        services.put(TimeblockRepositoryInterface.class, new JsonTimeblockRepository(resolve(JsonDB.class)));
         services.put(CommentServiceInterface.class, new CommentService(resolve(CommentRepositoryInterface.class)));
         services.put(TimeblockServiceInterface.class, new TimeblockService(resolve(TimeblockRepositoryInterface.class)));
         services.put(DrugServiceInterface.class, new DrugService(resolve(DrugRepositoryInterface.class)));

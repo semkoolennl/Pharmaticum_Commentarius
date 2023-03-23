@@ -15,6 +15,7 @@ public class MainUI extends AbstractUI implements MainUiInterface {
     public void start() {
         textio.getTextTerminal().setBookmark("start");
         welcome();
+        System.exit(0);
     }
 
     private void welcome() {

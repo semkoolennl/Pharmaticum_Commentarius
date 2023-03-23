@@ -8,7 +8,6 @@ import com.pharmc.application.service.*;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
-        JsonRepositoryTest.class,
         JsonDrugRepositoryTest.class,
         JsonCommentRepositoryTest.class,
         JsonTimeblockRepositoryTest.class,

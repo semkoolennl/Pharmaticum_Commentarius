@@ -5,11 +5,11 @@ import java.util.Date;
 public class CommentEntity extends BaseEntity {
     private String text;
     private String date;
-    private String drugId;
+    private int drugId;
 
 
 
-    public CommentEntity(String drugId, String text) {
+    public CommentEntity(int drugId, String text) {
         this.text = text;
         this.date = String.valueOf(new Date());
         this.drugId = drugId;
@@ -32,19 +32,19 @@ public class CommentEntity extends BaseEntity {
         this.date = date;
     }
 
-    public String getDrugId() {
+    public int getDrugId() {
         return drugId;
     }
 
-    public void setDrugId(String drugId) {
+    public void setDrugId(int drugId) {
         this.drugId = drugId;
     }
 
-    public String toString() {
-        return "Comment{" +
-                "id=" + id +
-                ", text='" + text + '\'' +
-                ", date='" + date + '\'' +
-                '}';
-    }
+//    public String toString() {
+//        return "Comment{" +
+//                "id=" + id +
+//                ", text='" + text + '\'' +
+//                ", date='" + date + '\'' +
+//                '}';
+//    }
 }

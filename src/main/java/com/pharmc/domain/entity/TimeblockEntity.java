@@ -3,9 +3,9 @@ package com.pharmc.domain.entity;
 public class TimeblockEntity extends BaseEntity {
     private String description;
     private int duration;
-    private String drugId;
+    private int drugId;
 
-    public TimeblockEntity(String drugId, String description, int duration) {
+    public TimeblockEntity(int drugId, String description, int duration) {
         this.drugId = drugId;
         this.description = description;
         this.duration = duration;
@@ -27,11 +27,11 @@ public class TimeblockEntity extends BaseEntity {
         this.duration = duration;
     }
 
-    public String getDrugId() {
+    public int getDrugId() {
         return drugId;
     }
 
-    public void setDrugId(String drugId) {
+    public void setDrugId(int drugId) {
         this.drugId = drugId;
     }
 

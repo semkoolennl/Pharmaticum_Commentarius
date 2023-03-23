@@ -31,7 +31,7 @@ public class DrugUI extends AbstractUI
 
     public void display()
     {
-        drugs = service.readDrugs();
+        drugs = service.readAll();
 
         textio.getTextTerminal().resetToBookmark("start");
         textio.getTextTerminal().printf("Drugs overview %s\n", !message.equals("") ? "- " + message : "");
@@ -89,9 +89,11 @@ public class DrugUI extends AbstractUI
         textio.getTextTerminal().resetToBookmark("start");
         textio.getTextTerminal().println("Add drug");
         textio.getTextTerminal().println("============================");
-        String name = textio.newStringInputReader().read("Name:");
-        String description = textio.newStringInputReader().read("Description:");
-        service.createDrug(name, description);
+        DrugEntity drug = new DrugEntity(
+                textio.newStringInputReader().read("Name:"),
+                textio.newStringInputReader().read("Description:")
+        );
+        service.save(drug);
 
         message = "Drug has been added";
     }
@@ -99,7 +101,7 @@ public class DrugUI extends AbstractUI
     private void editDrug(int id)
     {
         showDrug(id, "Edit drug");
-        DrugEntity drug = service.readDrugById(drugs.get(id).getId());
+        DrugEntity drug = service.readById(drugs.get(id).getId());
 
         DrugEditOptions selected = textio.newEnumInputReader(DrugEditOptions.class).read("\nSelect an option:");
         switch (selected) {
@@ -117,14 +119,14 @@ public class DrugUI extends AbstractUI
                 return;
         }
 
-        service.updateDrug(drug.getId(), drug.getName(), drug.getDescription());
+        service.save(drug);
         message = "Drug has been updated";
         editDrug(id);
     }
 
     private void deleteDrug(int id)
     {
-        service.deleteDrug(drugs.get(id).getId());
+        service.delete(drugs.get(id));
         message = "Drug has been deleted";
     }
 
@@ -133,7 +135,7 @@ public class DrugUI extends AbstractUI
         textio.getTextTerminal().println(message);
         textio.getTextTerminal().println("==============================================");
 
-        DrugEntity drug = service.readDrugById(drugs.get(id).getId());
+        DrugEntity drug = service.readById(drugs.get(id).getId());
 
         if (drug == null) {
             this.message = "Drug not found";

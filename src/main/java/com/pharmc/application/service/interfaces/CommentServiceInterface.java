@@ -4,11 +4,6 @@ import com.pharmc.domain.entity.CommentEntity;
 
 import java.util.ArrayList;
 
-public interface CommentServiceInterface {
-    CommentEntity createComment(String drugId, String text);
-    CommentEntity updateComment(String id, String text);
-    void deleteComment(String id);
-    ArrayList<CommentEntity> readComments();
-    CommentEntity readCommentById(String id);
-    ArrayList<CommentEntity> readCommentsByDrugId(String id);
+public interface CommentServiceInterface extends AbstractEntityServiceInterface<CommentEntity>{
+    ArrayList<CommentEntity> readByDrugId(int id);
 }

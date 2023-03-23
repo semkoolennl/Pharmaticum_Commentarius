@@ -1,25 +1,19 @@
 package com.pharmc.domain.entity;
 
-import java.util.UUID;
-
 public class BaseEntity {
-    protected String id;
+    protected int id = -1;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public BaseEntity() {
-        this.id = UUID.randomUUID().toString();
-    }
-
-    public String toString() {
-        return "BaseEntity{" +
-                "uuid=" + id +
-                '}';
-    }
+//    public String toString() {
+//        return "BaseEntity{" +
+//                "uuid=" + id +
+//                '}';
+//    }
 }

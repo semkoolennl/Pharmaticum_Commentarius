@@ -10,10 +10,10 @@ public class JsonTimeblockRepositoryTest extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        repository = new JsonTimeblockRepository(System.getProperty("user.dir") + "/src/test/resources/timeblocks.json");
+        repository = new JsonTimeblockRepository(new JsonDB(System.getProperty("user.dir") + "/src/test/resources/db.json"));
         repository.deleteAll();
-        repository.save(new TimeblockEntity("1", "timeblock 1", 10));
-        repository.save(new TimeblockEntity("2", "timeblock 2", 20));
+        repository.save(new TimeblockEntity(1, "timeblock 1", 10));
+        repository.save(new TimeblockEntity(2, "timeblock 2", 20));
     }
 
     public void tearDown() {
@@ -34,7 +34,7 @@ public class JsonTimeblockRepositoryTest extends TestCase {
     }
 
     public void testFindByIdNotFound() {
-        TimeblockEntity timeblock = repository.findById("testid");
+        TimeblockEntity timeblock = repository.findById(666);
         assertNull(timeblock);
     }
 
@@ -47,12 +47,12 @@ public class JsonTimeblockRepositoryTest extends TestCase {
     }
 
     public void testFindByDrugIdNotFound() {
-        ArrayList<TimeblockEntity> timeblocks = repository.findByDrugId("testid");
+        ArrayList<TimeblockEntity> timeblocks = repository.findByDrugId(666);
         assertEquals(0, timeblocks.size());
     }
 
     public void testSave() {
-        TimeblockEntity timeblock = new TimeblockEntity("3", "timeblock 3", 30);
+        TimeblockEntity timeblock = new TimeblockEntity(3, "timeblock 3", 30);
         repository.save(timeblock);
 
         repository.findById(timeblock.getId());
@@ -61,7 +61,7 @@ public class JsonTimeblockRepositoryTest extends TestCase {
     }
 
     public void testSaveNoDuplicate() {
-        TimeblockEntity timeblock = new TimeblockEntity("3", "timeblock 3", 30);
+        TimeblockEntity timeblock = new TimeblockEntity(3, "timeblock 3", 30);
         repository.save(timeblock);
         repository.save(timeblock);
 
@@ -70,7 +70,7 @@ public class JsonTimeblockRepositoryTest extends TestCase {
     }
 
     public void testDelete() {
-        TimeblockEntity timeblock = new TimeblockEntity("3", "timeblock 3", 30);
+        TimeblockEntity timeblock = new TimeblockEntity(3, "timeblock 3", 30);
         repository.save(timeblock);
 
         repository.delete(timeblock.getId());

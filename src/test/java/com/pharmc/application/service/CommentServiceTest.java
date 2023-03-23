@@ -2,6 +2,7 @@ package com.pharmc.application.service;
 
 import com.pharmc.domain.entity.CommentEntity;
 import com.pharmc.infrastructure.persistence.JsonCommentRepository;
+import com.pharmc.infrastructure.persistence.JsonDB;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class CommentServiceTest extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        repository = new JsonCommentRepository(System.getProperty("user.dir") + "/src/test/resources/comments.json");
+        repository = new JsonCommentRepository(new JsonDB(System.getProperty("user.dir") + "/src/test/resources/db.json"));
         service    = new CommentService(repository);
 
         repository.deleteAll();
@@ -22,9 +23,9 @@ public class CommentServiceTest extends TestCase {
         repository.deleteAll();
     }
 
-    public void testCreateComment() {
-        CommentEntity comment = service.createComment("testdrug1", "testdescription1");
-        CommentEntity commentSaved = service.readCommentById(comment.getId());
+    public void testSave() {
+        CommentEntity comment = service.save(new CommentEntity(1, "comment1"));
+        CommentEntity commentSaved = service.readById(comment.getId());
 
         assertEquals(comment.getId(), commentSaved.getId());
         assertEquals(comment.getDrugId(), commentSaved.getDrugId());
@@ -33,86 +34,71 @@ public class CommentServiceTest extends TestCase {
         repository.deleteAll();
     }
 
-    public void testUpdateComment() {
-        CommentEntity comment = service.createComment("testdrug1", "testdescription1");
-        CommentEntity changed = service.updateComment(comment.getId(), "testdescription2");
-
-        assertEquals(comment.getId(), changed.getId());
-        assertEquals(comment.getDrugId(), changed.getDrugId());
-        assertEquals("testdescription2", changed.getText());
-
-        repository.deleteAll();
-    }
-
-    public void testUpdateCommentNotFound() {
-        CommentEntity comment = service.updateComment("testid", "testdescription2");
-        assertNull(comment);
-    }
-
     public void testDeleteComment() {
-        CommentEntity comment1 = service.createComment("drugid1", "comment1");
-        CommentEntity comment2 = service.createComment("drugid2", "comment2");
+        CommentEntity comment1 = service.save(new CommentEntity(1, "comment1"));
+        CommentEntity comment2 = service.save(new CommentEntity(1, "comment2"));
 
-        assertEquals(2, service.readComments().size());
-        service.deleteComment(comment1.getId());
-        assertEquals(1, service.readComments().size());
-        service.deleteComment(comment2.getId());
-        assertEquals(0, service.readComments().size());
+        assertEquals(2, service.readAll().size());
+        service.delete(comment1.getId());
+        assertEquals(1, service.readAll().size());
+        service.delete(comment2);
+        assertEquals(0, service.readAll().size());
 
         repository.deleteAll();
     }
 
     public void testDeleteCommentNotFound() {
-        service.createComment("drugid1", "comment1");
-        assertEquals(1, service.readComments().size());
+        CommentEntity comment = service.save(new CommentEntity(1, "comment1"));
+        assertEquals(1, service.readAll().size());
 
-        service.deleteComment("testid");
-        assertEquals(1, service.readComments().size());
+        service.delete(666);
+        service.delete(new CommentEntity(666, "comment666"));
+        assertEquals(1, service.readAll().size());
 
         repository.deleteAll();
     }
 
     public void testReadComments() {
-        CommentEntity comment1 = service.createComment("drugid1", "comment1");
-        CommentEntity comment2 = service.createComment("drugid2", "comment2");
+        service.save(new CommentEntity(1, "comment1"));
+        service.save(new CommentEntity(2, "comment2"));
 
-        assertEquals(2, service.readComments().size());
+        assertEquals(2, service.readAll().size());
 
         repository.deleteAll();
     }
 
     public void testReadCommentsNotFound() {
-        assertEquals(0, service.readComments().size());
+        assertEquals(0, service.readAll().size());
     }
 
     public void testReadCommentById() {
-        CommentEntity comment1 = service.createComment("drugid1", "comment1");
-        CommentEntity comment2 = service.createComment("drugid2", "comment2");
+        CommentEntity comment1 = service.save(new CommentEntity(1, "comment1"));
+        CommentEntity comment2 = service.save(new CommentEntity(2, "comment2"));
 
-        assertEquals(comment1.getId(), service.readCommentById(comment1.getId()).getId());
-        assertEquals(comment2.getId(), service.readCommentById(comment2.getId()).getId());
+        assertEquals(comment1.getId(), service.readById(comment1.getId()).getId());
+        assertEquals(comment2.getId(), service.readById(comment2.getId()).getId());
 
         repository.deleteAll();
     }
 
     public void testReadCommentsByIdNotFound() {
-        CommentEntity comment = service.readCommentById("testid");
+        CommentEntity comment = service.readById(666);
         assertNull(comment);
     }
 
     public void testReadCommentsByDrugId() {
-        CommentEntity comment1 = service.createComment("drugid1", "comment1");
-        CommentEntity comment2 = service.createComment("drugid2", "comment2");
-        CommentEntity comment3 = service.createComment("drugid1", "comment3");
+        service.save(new CommentEntity(1, "comment1"));
+        service.save(new CommentEntity(1, "comment2"));
+        service.save(new CommentEntity(2, "comment3"));
 
-        assertEquals(2, service.readCommentsByDrugId("drugid1").size());
-        assertEquals(1, service.readCommentsByDrugId("drugid2").size());
+        assertEquals(2, service.readByDrugId(1).size());
+        assertEquals(1, service.readByDrugId(2).size());
 
         repository.deleteAll();
     }
 
     public void testReadCommentsByDrugIdNotFound() {
-        ArrayList<CommentEntity> comment = service.readCommentsByDrugId("testid");
+        ArrayList<CommentEntity> comment = service.readByDrugId(666);
         assertEquals(0, comment.size());
     }
 }

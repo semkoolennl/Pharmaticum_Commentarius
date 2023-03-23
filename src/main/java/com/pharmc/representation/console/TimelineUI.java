@@ -24,11 +24,11 @@ public class TimelineUI extends AbstractUI {
         this.service = container.resolve(TimeblockServiceInterface.class);
     }
 
-    public void editTimeblocksForDrug(String drugId) {
+    public void editTimeblocksForDrug(int drugId) {
         textio.getTextTerminal().resetToBookmark("start");
         textio.getTextTerminal().printf("Edit Timeline");
         textio.getTextTerminal().println("==================================");
-        ArrayList<TimeblockEntity> timeblocks = service.readTimeblocksByDrugId(drugId);
+        ArrayList<TimeblockEntity> timeblocks = service.readByDrugId(drugId);
         showTimeblocks(timeblocks);
 
         EditForDrugMenu menu = textio.newEnumInputReader(EditForDrugMenu.class)
@@ -38,10 +38,11 @@ public class TimelineUI extends AbstractUI {
                 textio.getTextTerminal().resetToBookmark("start");
                 textio.getTextTerminal().println("Create timeblock");
                 textio.getTextTerminal().println("==================================\n");
-                service.createTimeblock(
+                service.save(new TimeblockEntity(
                         drugId,
                         textio.newStringInputReader().withMinLength(1).read("Enter timeblock description"),
                         textio.newIntInputReader().withMinVal(1).read("Enter timeblock duration")
+                    )
                 );
                 break;
             case EDIT:
@@ -50,7 +51,7 @@ public class TimelineUI extends AbstractUI {
                 break;
             case DELETE:
                 timeblockId = textio.newIntInputReader().withMinVal(0).withMaxVal(timeblocks.size()-1).read("Enter timeblock ID");
-                service.deleteTimeblock(timeblocks.get(timeblockId));
+                service.delete(timeblocks.get(timeblockId));
                 break;
             case BACK:
                 return;
@@ -78,7 +79,7 @@ public class TimelineUI extends AbstractUI {
                 return;
         }
 
-        service.updateTimeblock(timeblock);
+        service.save(timeblock);
         editTimeblock(timeblock);
     }
 
@@ -89,8 +90,8 @@ public class TimelineUI extends AbstractUI {
         textio.getTextTerminal().printf("  - %-12s: %s\n", "Duration", timeblock.getDuration());
     }
 
-    public void showTimeblocksByDrugId(String drugId) {
-        ArrayList<TimeblockEntity> timeblocks = service.readTimeblocksByDrugId(drugId);
+    public void showTimeblocksByDrugId(int drugId) {
+        ArrayList<TimeblockEntity> timeblocks = service.readByDrugId(drugId);
         showTimeblocks(timeblocks);
     }
 

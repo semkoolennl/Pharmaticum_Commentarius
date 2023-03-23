@@ -1,14 +1,12 @@
 package com.pharmc.infrastructure.persistence;
 
-import com.pharmc.domain.entity.CommentEntity;
 import com.pharmc.domain.entity.DrugEntity;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class JsonDrugRepositoryTest extends TestCase {
-    private final JsonDrugRepository repository = new JsonDrugRepository(System.getProperty("user.dir") + "/src/test/resources/drugs.json");
+    private final JsonDrugRepository repository = new JsonDrugRepository(new JsonDB(System.getProperty("user.dir") + "/src/test/resources/db.json"));
 
     public void testFindAll() {
         repository.deleteAll();
@@ -41,7 +39,7 @@ public class JsonDrugRepositoryTest extends TestCase {
 
     public void testFindByIdNotFound() {
         repository.deleteAll();
-        DrugEntity drug = repository.findById("testid");
+        DrugEntity drug = repository.findById(666);
         assertNull(drug);
     }
 
@@ -59,7 +57,7 @@ public class JsonDrugRepositoryTest extends TestCase {
     public void testSaveNoDuplicate() {
         repository.deleteAll();
         DrugEntity drug = new DrugEntity("testdrug1", "testdescription1");
-        drug.setId("testid");
+        drug.setId(123);
         repository.save(drug);
         repository.save(drug);
 

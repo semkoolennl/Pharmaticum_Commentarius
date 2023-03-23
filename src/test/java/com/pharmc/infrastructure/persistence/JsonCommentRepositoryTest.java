@@ -10,10 +10,10 @@ public class JsonCommentRepositoryTest extends TestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        repository = new JsonCommentRepository(System.getProperty("user.dir") + "/src/test/resources/comments.json");
+        repository = new JsonCommentRepository(new JsonDB(System.getProperty("user.dir") + "/src/test/resources/db.json"));
         repository.deleteAll();
-        repository.save(new CommentEntity("1", "comment 1"));
-        repository.save(new CommentEntity("2", "comment 2"));
+        repository.save(new CommentEntity(1, "comment 1"));
+        repository.save(new CommentEntity(2, "comment 2"));
     }
 
     public void tearDown() throws Exception {
@@ -34,7 +34,7 @@ public class JsonCommentRepositoryTest extends TestCase {
     }
 
     public void testFindByIdNotFound() {
-        CommentEntity comment = repository.findById("testid");
+        CommentEntity comment = repository.findById(666);
         assertNull(comment);
     }
 
@@ -47,12 +47,12 @@ public class JsonCommentRepositoryTest extends TestCase {
     }
 
     public void testFindByDrugIdNotFound() {
-        ArrayList<CommentEntity> comments = repository.findByDrugId("testid");
+        ArrayList<CommentEntity> comments = repository.findByDrugId(666);
         assertEquals(0, comments.size());
     }
 
     public void testSave() {
-        CommentEntity comment = new CommentEntity("3", "comment 3");
+        CommentEntity comment = new CommentEntity(3, "comment 3");
         repository.save(comment);
 
         repository.findById(comment.getId());
@@ -61,7 +61,7 @@ public class JsonCommentRepositoryTest extends TestCase {
     }
 
     public void testSaveNoDuplicate() {
-        CommentEntity comment = new CommentEntity("3", "comment 3");
+        CommentEntity comment = new CommentEntity(3, "comment 3");
         repository.save(comment);
         repository.save(comment);
 

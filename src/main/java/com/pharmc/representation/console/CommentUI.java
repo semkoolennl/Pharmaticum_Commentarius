@@ -24,18 +24,21 @@ public class CommentUI extends AbstractUI {
         this.service = container.resolve(CommentServiceInterface.class);
     }
 
-    public void editCommentsForDrug(String drugId) {
+    public void editCommentsForDrug(int drugId) {
         textio.getTextTerminal().resetToBookmark("start");
         textio.getTextTerminal().printf("Edit Comments");
         textio.getTextTerminal().println("==================================");
-        ArrayList<CommentEntity> comments = service.readCommentsByDrugId(drugId);
+        ArrayList<CommentEntity> comments = service.readByDrugId(drugId);
         showComments(comments);
 
         EditForDrugMenu menu = textio.newEnumInputReader(EditForDrugMenu.class)
                 .read("\nSelect an action");
         switch (menu) {
             case ADD:
-                service.createComment(drugId, textio.newStringInputReader().withMinLength(1).read("Enter comment text"));
+                service.save(new CommentEntity(
+                    drugId,
+                    textio.newStringInputReader().withMinLength(1).read("Enter comment text")
+                ));
                 break;
             case EDIT:
                 int commentId = textio.newIntInputReader().withMinVal(0).withMaxVal(comments.size()-1).read("Enter comment ID");
@@ -43,7 +46,7 @@ public class CommentUI extends AbstractUI {
                 break;
             case DELETE:
                 commentId = textio.newIntInputReader().withMinVal(0).withMaxVal(comments.size()-1).read("Enter comment ID");
-                service.deleteComment(comments.get(commentId).getId());
+                service.delete(comments.get(commentId).getId());
                 break;
             case BACK:
                 return;
@@ -52,11 +55,11 @@ public class CommentUI extends AbstractUI {
         editCommentsForDrug(drugId);
     }
 
-    public void editComment(String commentId) {
+    public void editComment(int commentId) {
         textio.getTextTerminal().resetToBookmark("start");
         textio.getTextTerminal().println("Edit comment");
         textio.getTextTerminal().println("==================================");
-        CommentEntity comment = service.readCommentById(commentId);
+        CommentEntity comment = service.readById(commentId);
 
         textio.getTextTerminal().printf("  - %-12s: %s\n", "ID", comment.getId());
         textio.getTextTerminal().printf("  - %-12s: %s\n", "Text", comment.getText());
@@ -66,7 +69,8 @@ public class CommentUI extends AbstractUI {
                 .read("\nSelect an action");
         switch (menu) {
             case EDIT_TEXT:
-                service.updateComment(commentId, textio.newStringInputReader().withMinLength(1).read("Enter comment text"));
+                comment.setText(textio.newStringInputReader().withMinLength(1).read("Enter comment text"));
+                service.save(comment);
                 break;
             case BACK:
                 return;
@@ -75,10 +79,10 @@ public class CommentUI extends AbstractUI {
         editComment(commentId);
     }
 
-    public void showCommentsByDrugId(String drugId) {
+    public void showCommentsByDrugId(int drugId) {
         textio.getTextTerminal().resetToBookmark("start");
         textio.getTextTerminal().println("Comments:");
-        ArrayList<CommentEntity> comments = service.readCommentsByDrugId(drugId);
+        ArrayList<CommentEntity> comments = service.readByDrugId(drugId);
         showComments(comments);
     }
 
