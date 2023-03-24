@@ -1,12 +1,8 @@
 package com.pharmc.representation.console;
 
-import com.pharmc.application.Container;
-import com.pharmc.application.service.interfaces.CommentServiceInterface;
 import com.pharmc.application.service.interfaces.DrugServiceInterface;
-import com.pharmc.application.service.interfaces.TimeblockServiceInterface;
-import com.pharmc.domain.entity.CommentEntity;
 import com.pharmc.domain.entity.DrugEntity;
-import com.pharmc.domain.entity.TimeblockEntity;
+import com.pharmc.infrastructure.setup.Container;
 import com.pharmc.representation.console.model.Table;
 
 import java.util.ArrayList;

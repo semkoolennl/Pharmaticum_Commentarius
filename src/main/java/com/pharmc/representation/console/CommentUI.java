@@ -1,8 +1,8 @@
 package com.pharmc.representation.console;
 
-import com.pharmc.application.Container;
 import com.pharmc.application.service.interfaces.CommentServiceInterface;
 import com.pharmc.domain.entity.CommentEntity;
+import com.pharmc.infrastructure.setup.Container;
 
 import java.util.ArrayList;
 

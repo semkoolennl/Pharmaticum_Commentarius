@@ -1,6 +1,6 @@
 package com.pharmc.representation.console;
 
-import com.pharmc.application.Container;
+import com.pharmc.infrastructure.setup.Container;
 import com.pharmc.representation.interfaces.MainUiInterface;
 
 public class MainUI extends AbstractUI implements MainUiInterface {
