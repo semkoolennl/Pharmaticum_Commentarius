@@ -8,21 +8,26 @@ public class MainView extends AbstractView {
     }
 
     @Override
-    public void render() {
+    public void render(Object... args) {
         terminal.resetToBookmark("");
+        printer.setDelay(3);
+        printer.print("Welcome to the Pharmacy Management System\n\n");
 
-        terminal.println("Welcome to the Pharmacy Management System\n");
-        boolean gotodrugs = textio.newBooleanInputReader()
-                .withDefaultValue(false)
-                .read("Do you want to go to the drugs index?");
-        if (gotodrugs) {
-            navigation.redirect("/drugs/index");
-            return;
-        }
+        terminal.setBookmark("welcome");
 
-        boolean exit = textio.newBooleanInputReader()
-                .withDefaultValue(false)
-                .read("Do you want to exit?");
+        printer.setDelay(1);
+        Runnable selected = utils.selectMenu().withBookmark("welcome")
+                .addOption("Drugs", () -> navigation.redirect("/drugs/index"))
+                .addOption("Exit",  () -> exit())
+                .read();
+
+        printer.setDelay(0);
+        terminal.setBookmark("mainmenu");
+        selected.run();
+    }
+
+    private void exit() {
+        boolean exit = utils.confirm().withBookmark("welcome").read("Do you want to exit? (y/n):");
         if (exit) {
             System.exit(0);
         }

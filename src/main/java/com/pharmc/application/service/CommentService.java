@@ -2,7 +2,7 @@ package com.pharmc.application.service;
 
 import com.pharmc.application.service.interfaces.CommentServiceInterface;
 import com.pharmc.domain.entity.CommentEntity;
-import com.pharmc.infrastructure.persistence.interfaces.CommentRepositoryInterface;
+import com.pharmc.domain.repositories.CommentRepositoryInterface;
 
 import java.util.ArrayList;
 

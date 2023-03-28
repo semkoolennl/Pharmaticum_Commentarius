@@ -4,14 +4,15 @@ import com.pharmc.application.service.CommentService;
 import com.pharmc.application.service.DrugService;
 import com.pharmc.application.service.TimeblockService;
 import com.pharmc.application.service.interfaces.CommentServiceInterface;
+import com.pharmc.application.service.interfaces.DrugServiceInterface;
 import com.pharmc.application.service.interfaces.TimeblockServiceInterface;
+import com.pharmc.domain.repositories.CommentRepositoryInterface;
+import com.pharmc.domain.repositories.DrugRepositoryInterface;
+import com.pharmc.domain.repositories.TimeblockRepositoryInterface;
 import com.pharmc.infrastructure.persistence.JsonCommentRepository;
 import com.pharmc.infrastructure.persistence.JsonDB;
 import com.pharmc.infrastructure.persistence.JsonDrugRepository;
 import com.pharmc.infrastructure.persistence.JsonTimeblockRepository;
-import com.pharmc.infrastructure.persistence.interfaces.CommentRepositoryInterface;
-import com.pharmc.infrastructure.persistence.interfaces.DrugRepositoryInterface;
-import com.pharmc.infrastructure.persistence.interfaces.TimeblockRepositoryInterface;
 import com.pharmc.representation.consoleV2.ConsoleUI;
 import com.pharmc.representation.interfaces.MainUiInterface;
 
@@ -38,7 +39,7 @@ public class Bootstrap {
     }
 
     private static void registerServices(Container container) {
-        container.register(CommentServiceInterface.class, new DrugService(container.resolve(DrugRepositoryInterface.class)));
+        container.register(DrugServiceInterface.class, new DrugService(container.resolve(DrugRepositoryInterface.class)));
         container.register(CommentServiceInterface.class, new CommentService(container.resolve(CommentRepositoryInterface.class)));
         container.register(TimeblockServiceInterface.class, new TimeblockService(container.resolve(TimeblockRepositoryInterface.class)));
     }

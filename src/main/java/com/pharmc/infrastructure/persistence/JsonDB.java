@@ -6,8 +6,10 @@ import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 public class JsonDB {
+    private final Logger LOG = Logger.getLogger(JsonDB.class.getName());
     private final String filepath;
     private final Gson gson;
     private HashMap<String, String> data = new HashMap<>();
@@ -15,6 +17,7 @@ public class JsonDB {
     public JsonDB(String filepath) {
         this.filepath = filepath;
         this.gson     = new Gson();
+        initialize();
     }
 
     public String loadJson(String key) {
@@ -22,12 +25,11 @@ public class JsonDB {
     }
 
     public void saveJson(String key, String value) {
-        // save data to json file. Per key in the first level of the json file store the json string in to the data hashmap using the key as the key in the hashmap
         data.put(key, value);
         try (Writer writer = new FileWriter(filepath)) {
             gson.toJson(data, writer);
         } catch (IOException e) {
-            System.out.println("jsonDB save error: " + e.getMessage());
+            LOG.severe("jsonDB save error: " + e.getMessage());
         }
     }
 
@@ -37,25 +39,34 @@ public class JsonDB {
 
     private void initialize() {
         createFileIfItDoesNotExist();
-        // load data from json file. Per key in the first level of the json file store the json string in to the data hashmap using the key as the key in the hashmap
         try (Reader reader = new FileReader(filepath)) {
             Type typeOfT = TypeToken.getParameterized(HashMap.class, String.class, String.class).getType();
             data = gson.fromJson(reader, typeOfT);
         } catch (IOException e) {
-            System.out.println("jsonDB load error: " + e.getMessage());
+            LOG.severe("jsonDB load error: " + e.getMessage());
         }
     }
 
     private void createFileIfItDoesNotExist() {
         File file = new File(filepath);
-        if (!file.exists()) {
-            try {
-                file.getParentFile().mkdirs();
-                file.createNewFile();
-            } catch (IOException e) {
-                System.out.println("jsonDB createFile error: " + e.getMessage());
+        if (file.exists()) {
+            return;
+        }
+
+        boolean success;
+        try {
+            if (!file.getParentFile().exists()) {
+                success = file.getParentFile().mkdirs();
+                if (!success) {
+                    LOG.severe("jsonDB createFile error: could not create parent directory");
+                }
             }
+            success = file.createNewFile();
+            if (!success) {
+                LOG.severe("jsonDB createFile error: could not create file");
+            }
+        } catch (IOException e) {
+            LOG.severe("jsonDB createFile error: " + e.getMessage());
         }
     }
-
 }

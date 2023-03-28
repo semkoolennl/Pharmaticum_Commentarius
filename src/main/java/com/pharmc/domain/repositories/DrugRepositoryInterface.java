@@ -1,4 +1,4 @@
-package com.pharmc.infrastructure.persistence.interfaces;
+package com.pharmc.domain.repositories;
 
 import com.pharmc.domain.entity.DrugEntity;
 

@@ -1,11 +1,12 @@
 package com.pharmc.application.service;
 
 import com.pharmc.application.service.interfaces.AbstractEntityServiceInterface;
-import com.pharmc.infrastructure.persistence.interfaces.AbstractRepositoryInterface;
+import com.pharmc.domain.entity.BaseEntity;
+import com.pharmc.domain.repositories.AbstractRepositoryInterface;
 
 import java.util.ArrayList;
 
-public class AbstractEntityService<Entity> implements AbstractEntityServiceInterface<Entity> {
+public class AbstractEntityService<Entity extends BaseEntity> implements AbstractEntityServiceInterface<Entity> {
     protected AbstractRepositoryInterface<Entity> repository;
 
     public AbstractEntityService(AbstractRepositoryInterface<Entity> repository) {

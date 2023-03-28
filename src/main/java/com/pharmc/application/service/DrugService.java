@@ -2,7 +2,7 @@ package com.pharmc.application.service;
 
 import com.pharmc.application.service.interfaces.DrugServiceInterface;
 import com.pharmc.domain.entity.DrugEntity;
-import com.pharmc.infrastructure.persistence.interfaces.DrugRepositoryInterface;
+import com.pharmc.domain.repositories.DrugRepositoryInterface;
 
 public class DrugService extends AbstractEntityService<DrugEntity> implements DrugServiceInterface {
     DrugRepositoryInterface repository;

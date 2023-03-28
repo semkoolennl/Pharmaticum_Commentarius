@@ -1,12 +1,13 @@
-package com.pharmc.infrastructure.persistence.interfaces;
+package com.pharmc.domain.repositories;
+
+import com.pharmc.domain.entity.BaseEntity;
 
 import java.util.ArrayList;
 
-public interface AbstractRepositoryInterface<Entity> {
+public interface AbstractRepositoryInterface<Entity extends BaseEntity> {
     void save(Entity entity);
     Entity findById(int id);
     ArrayList<Entity> findAll();
-    ArrayList<Entity> searchByField(String field, Object value);
     boolean delete(Entity entity);
     boolean delete(int id);
     void deleteAll();

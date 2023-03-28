@@ -1,1 +1,1 @@
-{"com.pharmc.domain.entity.DrugEntity":"[{\"name\":\"test1\",\"description\":\"desc1\",\"id\":1}]"}
+{"com.pharmc.domain.entity.CommentEntity":"[{\"text\":\"This is a comment\",\"date\":\"Tue Mar 28 10:31:56 CEST 2023\",\"drugId\":1,\"id\":1}]","com.pharmc.domain.entity.DrugEntity":"[{\"name\":\"testmodified\",\"description\":\"modified description\",\"id\":1},{\"name\":\"testname\",\"description\":\"testdescription\",\"id\":2}]"}

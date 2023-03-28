@@ -7,7 +7,6 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ViewsScanner {
     public static ArrayList<AbstractView> retrieveViews(Container container) {

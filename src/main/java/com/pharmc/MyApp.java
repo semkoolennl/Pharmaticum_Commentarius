@@ -8,6 +8,7 @@ import com.pharmc.representation.interfaces.MainUiInterface;
 public class MyApp {
     public static void main(String[] args) {
         Container container = Bootstrap.prod();
+        System.out.println(container);
         MainUiInterface ui  = container.resolve(MainUiInterface.class);
         ui.start();
     }

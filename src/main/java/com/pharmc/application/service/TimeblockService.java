@@ -2,7 +2,7 @@ package com.pharmc.application.service;
 
 import com.pharmc.application.service.interfaces.TimeblockServiceInterface;
 import com.pharmc.domain.entity.TimeblockEntity;
-import com.pharmc.infrastructure.persistence.interfaces.TimeblockRepositoryInterface;
+import com.pharmc.domain.repositories.TimeblockRepositoryInterface;
 
 import java.util.ArrayList;
 

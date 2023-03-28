@@ -3,9 +3,9 @@ package com.pharmc.application.service.interfaces;
 import java.util.ArrayList;
 
 public interface AbstractEntityServiceInterface<Entity> {
-    Entity save(Entity comment);
-    boolean delete(Entity comment);
-    boolean delete(int id);
-    ArrayList<Entity> readAll();
+    Entity save(Entity entity);
     Entity readById(int id);
+    ArrayList<Entity> readAll();
+    boolean delete(Entity entity);
+    boolean delete(int id);
 }

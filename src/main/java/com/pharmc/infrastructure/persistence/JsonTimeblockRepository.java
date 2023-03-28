@@ -1,7 +1,7 @@
 package com.pharmc.infrastructure.persistence;
 
 import com.pharmc.domain.entity.TimeblockEntity;
-import com.pharmc.infrastructure.persistence.interfaces.TimeblockRepositoryInterface;
+import com.pharmc.domain.repositories.TimeblockRepositoryInterface;
 
 import java.util.ArrayList;
 

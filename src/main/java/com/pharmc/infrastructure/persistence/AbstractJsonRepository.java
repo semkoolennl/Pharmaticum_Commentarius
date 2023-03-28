@@ -3,7 +3,7 @@ package com.pharmc.infrastructure.persistence;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pharmc.domain.entity.BaseEntity;
-import com.pharmc.infrastructure.persistence.interfaces.AbstractRepositoryInterface;
+import com.pharmc.domain.repositories.AbstractRepositoryInterface;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -58,7 +58,7 @@ abstract class AbstractJsonRepository<Entity extends BaseEntity> implements Abst
         persist();
     }
 
-    public ArrayList<Entity> searchByField(String fieldName, Object value) {
+    protected ArrayList<Entity> searchByField(String fieldName, Object value) {
         ArrayList<Entity> result = new ArrayList<>();
         for (Entity entity : entities.values()) {
             Object fieldValue = getEntityFieldValue(fieldName, entity);
